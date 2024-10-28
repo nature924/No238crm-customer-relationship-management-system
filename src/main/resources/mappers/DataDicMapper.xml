@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuhunyu.mapper.DataDicMapper">
+  <resultMap id="BaseResultMap" type="com.wuhunyu.pojo.DataDic">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="data_dic_name" jdbcType="VARCHAR" property="dataDicName" />
+    <result column="data_dic_value" jdbcType="VARCHAR" property="dataDicValue" />
+    <result column="is_valid" jdbcType="TINYINT" property="isValid" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, data_dic_name, data_dic_value, is_valid, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_datadic
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_datadic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wuhunyu.pojo.DataDic">
+    insert into t_datadic (id, data_dic_name, data_dic_value, 
+      is_valid, create_date, update_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{dataDicName,jdbcType=VARCHAR}, #{dataDicValue,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wuhunyu.pojo.DataDic">
+    insert into t_datadic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="dataDicName != null">
+        data_dic_name,
+      </if>
+      <if test="dataDicValue != null">
+        data_dic_value,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dataDicName != null">
+        #{dataDicName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataDicValue != null">
+        #{dataDicValue,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wuhunyu.pojo.DataDic">
+    update t_datadic
+    <set>
+      <if test="dataDicName != null">
+        data_dic_name = #{dataDicName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataDicValue != null">
+        data_dic_value = #{dataDicValue,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wuhunyu.pojo.DataDic">
+    update t_datadic
+    set data_dic_name = #{dataDicName,jdbcType=VARCHAR},
+      data_dic_value = #{dataDicValue,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=TINYINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--按服务名查询字典数据-->
+  <select id="selectDicByName" resultType="map" useCache="true" flushCache="false">
+    select
+        id,data_dic_value as dicName
+    from
+        t_datadic
+    where
+        is_valid=1
+        <if test="dicName!=null and dicName!=null">
+          and data_dic_name=#{dicName}
+        </if>
+  </select>
+
+  <select id="selectAllDic" resultType="DataDic" useCache="true" flushCache="false">
+    select
+        id, data_dic_name, data_dic_value, create_date, update_date
+    from
+        t_datadic
+    where
+        is_valid=1
+        <if test="dicName!=null and dicName!=''">
+            and data_dic_name=#{dicName}
+        </if>
+    limit #{page},#{limit}
+  </select>
+
+  <select id="selectAllDicForCount" resultType="integer" useCache="true" flushCache="false">
+    select
+        count(*)
+    from
+        t_datadic
+    where
+      is_valid=1
+      <if test="dicName!=null and dicName!=''">
+        and data_dic_name=#{dicName}
+      </if>
+  </select>
+
+  <insert id="addDic" flushCache="true">
+    insert into
+        t_datadic(data_dic_name, data_dic_value, is_valid, create_date, update_date)
+        <trim prefix="values(" suffix=")">
+            #{dataDicName}, #{dataDicValue}, 1, #{createDate}, #{updateDate}
+        </trim>
+  </insert>
+
+  <update id="updateDic" flushCache="true">
+    update
+        t_datadic
+    <set>
+        data_dic_name=#{dataDicName},data_dic_value=#{dataDicValue},update_date=#{updateDate}
+    </set>
+    <where>
+        id=#{id} and is_valid=1
+    </where>
+  </update>
+
+  <update id="deleteDicById" flushCache="true">
+    update
+        t_datadic
+    <set>
+        is_valid=0
+    </set>
+    <where>
+        id=#{id} and is_valid=1
+    </where>
+  </update>
+
+</mapper>

@@ -1,0 +1,44 @@
+## 端口号 上下⽂路径
+server:
+  port: 8080
+  servlet:
+    context-path: /crm
+
+## 数据源配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/crm?serverTimezone=CTT
+    username: root
+    password: root
+  ## freemarker
+  freemarker:
+    suffix: .ftl
+    content-type: text/html
+    charset: UTF-8
+    template-loader-path: classpath:/views/
+    cache: false
+    request-context-attribute: request
+
+## mybatis 配置
+mybatis:
+  mapper-locations: classpath:/mappers/*.xml
+  type-aliases-package: com.wuhunyu.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+
+## pageHelper 分 ⻚
+pagehelper:
+  helper-dialect: mysql
+
+logging:
+  ## 设置日志为logback
+  config: classpath:logback.xml
+#  level:
+#    com.wuhunyu.mapper: debug
+
+# 关闭druid检查
+Ddruid:
+  mysql:
+    usePingMethod: false

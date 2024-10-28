@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuhunyu.mapper.CustomerServeMapper">
+  <resultMap id="BaseResultMap" type="com.wuhunyu.pojo.CustomerServe">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="serve_type" jdbcType="VARCHAR" property="serveType" />
+    <result column="overview" jdbcType="VARCHAR" property="overview" />
+    <result column="customer" jdbcType="VARCHAR" property="customer" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="service_request" jdbcType="VARCHAR" property="serviceRequest" />
+    <result column="create_people" jdbcType="VARCHAR" property="createPeople" />
+    <result column="assigner" jdbcType="VARCHAR" property="assigner" />
+    <result column="assign_time" jdbcType="TIMESTAMP" property="assignTime" />
+    <result column="service_proce" jdbcType="VARCHAR" property="serviceProce" />
+    <result column="service_proce_people" jdbcType="VARCHAR" property="serviceProcePeople" />
+    <result column="service_proce_time" jdbcType="TIMESTAMP" property="serviceProceTime" />
+    <result column="service_proce_result" jdbcType="VARCHAR" property="serviceProceResult" />
+    <result column="myd" jdbcType="VARCHAR" property="myd" />
+    <result column="is_valid" jdbcType="INTEGER" property="isValid" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, serve_type, overview, customer, state, service_request, create_people, assigner, 
+    assign_time, service_proce, service_proce_people, service_proce_time, service_proce_result, 
+    myd, is_valid, update_date, create_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_customer_serve
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_customer_serve
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wuhunyu.pojo.CustomerServe">
+    insert into t_customer_serve (id, serve_type, overview, 
+      customer, state, service_request, 
+      create_people, assigner, assign_time, 
+      service_proce, service_proce_people, service_proce_time, 
+      service_proce_result, myd, is_valid, 
+      update_date, create_date)
+    values (#{id,jdbcType=INTEGER}, #{serveType,jdbcType=VARCHAR}, #{overview,jdbcType=VARCHAR}, 
+      #{customer,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{serviceRequest,jdbcType=VARCHAR}, 
+      #{createPeople,jdbcType=VARCHAR}, #{assigner,jdbcType=VARCHAR}, #{assignTime,jdbcType=TIMESTAMP}, 
+      #{serviceProce,jdbcType=VARCHAR}, #{serviceProcePeople,jdbcType=VARCHAR}, #{serviceProceTime,jdbcType=TIMESTAMP}, 
+      #{serviceProceResult,jdbcType=VARCHAR}, #{myd,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wuhunyu.pojo.CustomerServe">
+    insert into t_customer_serve
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="serveType != null">
+        serve_type,
+      </if>
+      <if test="overview != null">
+        overview,
+      </if>
+      <if test="customer != null">
+        customer,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="serviceRequest != null">
+        service_request,
+      </if>
+      <if test="createPeople != null">
+        create_people,
+      </if>
+      <if test="assigner != null">
+        assigner,
+      </if>
+      <if test="assignTime != null">
+        assign_time,
+      </if>
+      <if test="serviceProce != null">
+        service_proce,
+      </if>
+      <if test="serviceProcePeople != null">
+        service_proce_people,
+      </if>
+      <if test="serviceProceTime != null">
+        service_proce_time,
+      </if>
+      <if test="serviceProceResult != null">
+        service_proce_result,
+      </if>
+      <if test="myd != null">
+        myd,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="serveType != null">
+        #{serveType,jdbcType=VARCHAR},
+      </if>
+      <if test="overview != null">
+        #{overview,jdbcType=VARCHAR},
+      </if>
+      <if test="customer != null">
+        #{customer,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceRequest != null">
+        #{serviceRequest,jdbcType=VARCHAR},
+      </if>
+      <if test="createPeople != null">
+        #{createPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="assigner != null">
+        #{assigner,jdbcType=VARCHAR},
+      </if>
+      <if test="assignTime != null">
+        #{assignTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceProce != null">
+        #{serviceProce,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceProcePeople != null">
+        #{serviceProcePeople,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceProceTime != null">
+        #{serviceProceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceProceResult != null">
+        #{serviceProceResult,jdbcType=VARCHAR},
+      </if>
+      <if test="myd != null">
+        #{myd,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wuhunyu.pojo.CustomerServe">
+    update t_customer_serve
+    <set>
+      <if test="serveType != null">
+        serve_type = #{serveType,jdbcType=VARCHAR},
+      </if>
+      <if test="overview != null">
+        overview = #{overview,jdbcType=VARCHAR},
+      </if>
+      <if test="customer != null">
+        customer = #{customer,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceRequest != null">
+        service_request = #{serviceRequest,jdbcType=VARCHAR},
+      </if>
+      <if test="createPeople != null">
+        create_people = #{createPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="assigner != null">
+        assigner = #{assigner,jdbcType=VARCHAR},
+      </if>
+      <if test="assignTime != null">
+        assign_time = #{assignTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceProce != null">
+        service_proce = #{serviceProce,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceProcePeople != null">
+        service_proce_people = #{serviceProcePeople,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceProceTime != null">
+        service_proce_time = #{serviceProceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceProceResult != null">
+        service_proce_result = #{serviceProceResult,jdbcType=VARCHAR},
+      </if>
+      <if test="myd != null">
+        myd = #{myd,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wuhunyu.pojo.CustomerServe">
+    update t_customer_serve
+    set serve_type = #{serveType,jdbcType=VARCHAR},
+      overview = #{overview,jdbcType=VARCHAR},
+      customer = #{customer,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      service_request = #{serviceRequest,jdbcType=VARCHAR},
+      create_people = #{createPeople,jdbcType=VARCHAR},
+      assigner = #{assigner,jdbcType=VARCHAR},
+      assign_time = #{assignTime,jdbcType=TIMESTAMP},
+      service_proce = #{serviceProce,jdbcType=VARCHAR},
+      service_proce_people = #{serviceProcePeople,jdbcType=VARCHAR},
+      service_proce_time = #{serviceProceTime,jdbcType=TIMESTAMP},
+      service_proce_result = #{serviceProceResult,jdbcType=VARCHAR},
+      myd = #{myd,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectCustomerServes" flushCache="false" useCache="true" resultType="com.wuhunyu.pojo.CustomerServe">
+    select
+        cs.id, dic.data_dic_value as serveType , cs.overview, cs.customer, cs.state, cs.service_request, cs.create_people, u.user_name as assigner,
+        cs.assign_time, cs.service_proce, cs.service_proce_people, cs.service_proce_time, cs.service_proce_result,
+        cs.myd, cs.is_valid, cs.update_date, cs.create_date
+    from
+        t_customer_serve cs left join t_datadic dic on cs.serve_type=dic.id
+        left join t_user u on cs.assigner=u.id
+    <where>
+        cs.is_valid=1
+        and dic.is_valid=1
+        <if test="state!=null and state!=''">
+          and cs.state = #{state}
+        </if>
+        <if test="customer!=null and customer!=''">
+          and cs.customer like concat(#{customer},'%')
+        </if>
+        <if test="serveType!=null">
+          and cs.serve_type = #{serveType}
+        </if>
+        <if test="createPeople!=null and createPeople!=''">
+          and cs.create_people = #{createPeople}
+        </if>
+        <if test="assigner!=null and assigner!=''">
+          and u.user_name = #{assigner}
+        </if>
+    </where>
+    limit #{page},#{limit}
+  </select>
+
+  <select id="selectCustomerServesForCount" flushCache="false" useCache="true" resultType="int">
+    select
+        count(*)
+    from
+        t_customer_serve cs left join t_datadic dic on cs.serve_type=dic.id
+        left join t_user u on cs.assigner=u.id
+    <where>
+        cs.is_valid=1
+        and dic.is_valid=1
+        <if test="state!=null and state!=''">
+          and cs.state = #{state}
+        </if>
+        <if test="customer!=null and customer!=''">
+          and cs.customer like concat(#{customer},'%')
+        </if>
+        <if test="serveType!=null">
+          and cs.serve_type = #{serveType}
+        </if>
+        <if test="assigner!=null and assigner!=''">
+          and u.user_name = #{assigner}
+        </if>
+      </where>
+  </select>
+
+  <update id="deleteCustomerServe" flushCache="true">
+    update
+        t_customer_serve
+    <set>
+        is_valid=0
+    </set>
+    <where>
+        id=#{id}
+    </where>
+  </update>
+
+</mapper>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuhunyu.mapper.CustomerLossMapper">
+  <resultMap id="BaseResultMap" type="com.wuhunyu.pojo.CustomerLoss">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cus_no" jdbcType="VARCHAR" property="cusNo" />
+    <result column="cus_name" jdbcType="VARCHAR" property="cusName" />
+    <result column="cus_manager" jdbcType="VARCHAR" property="cusManager" />
+    <result column="last_order_time" jdbcType="DATE" property="lastOrderTime" />
+    <result column="confirm_loss_time" jdbcType="DATE" property="confirmLossTime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="loss_reason" jdbcType="VARCHAR" property="lossReason" />
+    <result column="is_valid" jdbcType="INTEGER" property="isValid" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cus_no, cus_name, cus_manager, last_order_time, confirm_loss_time, state, loss_reason, 
+    is_valid, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_customer_loss
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_customer_loss
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wuhunyu.pojo.CustomerLoss">
+    insert into t_customer_loss (id, cus_no, cus_name, 
+      cus_manager, last_order_time, confirm_loss_time, 
+      state, loss_reason, is_valid, 
+      create_date, update_date)
+    values (#{id,jdbcType=INTEGER}, #{cusNo,jdbcType=VARCHAR}, #{cusName,jdbcType=VARCHAR}, 
+      #{cusManager,jdbcType=VARCHAR}, #{lastOrderTime,jdbcType=DATE}, #{confirmLossTime,jdbcType=DATE}, 
+      #{state,jdbcType=INTEGER}, #{lossReason,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wuhunyu.pojo.CustomerLoss">
+    insert into t_customer_loss
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cusNo != null">
+        cus_no,
+      </if>
+      <if test="cusName != null">
+        cus_name,
+      </if>
+      <if test="cusManager != null">
+        cus_manager,
+      </if>
+      <if test="lastOrderTime != null">
+        last_order_time,
+      </if>
+      <if test="confirmLossTime != null">
+        confirm_loss_time,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="lossReason != null">
+        loss_reason,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cusNo != null">
+        #{cusNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cusName != null">
+        #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="cusManager != null">
+        #{cusManager,jdbcType=VARCHAR},
+      </if>
+      <if test="lastOrderTime != null">
+        #{lastOrderTime,jdbcType=DATE},
+      </if>
+      <if test="confirmLossTime != null">
+        #{confirmLossTime,jdbcType=DATE},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="lossReason != null">
+        #{lossReason,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wuhunyu.pojo.CustomerLoss">
+    update t_customer_loss
+    <set>
+      <if test="cusNo != null">
+        cus_no = #{cusNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cusName != null">
+        cus_name = #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="cusManager != null">
+        cus_manager = #{cusManager,jdbcType=VARCHAR},
+      </if>
+      <if test="lastOrderTime != null">
+        last_order_time = #{lastOrderTime,jdbcType=DATE},
+      </if>
+      <if test="confirmLossTime != null">
+        confirm_loss_time = #{confirmLossTime,jdbcType=DATE},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="lossReason != null">
+        loss_reason = #{lossReason,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wuhunyu.pojo.CustomerLoss">
+    update t_customer_loss
+    set cus_no = #{cusNo,jdbcType=VARCHAR},
+      cus_name = #{cusName,jdbcType=VARCHAR},
+      cus_manager = #{cusManager,jdbcType=VARCHAR},
+      last_order_time = #{lastOrderTime,jdbcType=DATE},
+      confirm_loss_time = #{confirmLossTime,jdbcType=DATE},
+      state = #{state,jdbcType=INTEGER},
+      loss_reason = #{lossReason,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insertBatch" flushCache="true">
+    insert into t_customer_loss(cus_no,cus_name,cus_manager,last_order_time,state,is_valid,create_date,update_date)
+    values 
+        <foreach collection="list" item="loss" separator=",">
+            (#{loss.cusNo},#{loss.cusName},#{loss.cusManager},#{loss.lastOrderTime},#{loss.state},#{loss.isValid},#{loss.createDate},#{loss.updateDate})
+        </foreach>
+  </insert>
+
+  <select id="findCustomerLoss" flushCache="false" useCache="true" resultMap="BaseResultMap">
+    select
+        <include refid="Base_Column_List"></include>
+    from
+        t_customer_loss
+    <where>
+        is_valid=1
+        <if test="customerNo!=null and customerNo!=''">
+            and cus_no=#{customerNo}
+        </if>
+        <if test="customerName!=null and customerName!=''">
+            and cus_name like concat('%',#{customerName},'%')
+        </if>
+        <if test="state!=null and state!=''">
+            and state=#{state}
+        </if>
+    </where>
+  </select>
+
+  <update id="updateCustomerLossState" flushCache="true">
+    update
+        t_customer_loss
+    <set>
+        <trim prefixOverrides=",">
+          <if test="confirmLossTime!=null">
+            ,confirm_loss_time=#{confirmLossTime}
+          </if>
+          <if test="lossReason!=null and lossReason!=''">
+            ,loss_reason=#{lossReason}
+          </if>
+          <if test="isValid!=null">
+            ,is_valid=#{isValid}
+          </if>
+          <if test="state!=null">
+            ,state=#{state}
+          </if>
+          <if test="updateDate!=null">
+            ,update_date=#{updateDate}
+          </if>
+        </trim>
+    </set>
+    <where>
+        id=#{id}
+    </where>
+  </update>
+
+</mapper>

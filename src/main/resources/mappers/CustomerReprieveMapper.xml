@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuhunyu.mapper.CustomerReprieveMapper">
+  <resultMap id="BaseResultMap" type="com.wuhunyu.pojo.CustomerReprieve">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="loss_id" jdbcType="INTEGER" property="lossId" />
+    <result column="measure" jdbcType="VARCHAR" property="measure" />
+    <result column="is_valid" jdbcType="INTEGER" property="isValid" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, loss_id, measure, is_valid, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_customer_reprieve
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_customer_reprieve
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wuhunyu.pojo.CustomerReprieve">
+    insert into t_customer_reprieve (id, loss_id, measure, 
+      is_valid, create_date, update_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{lossId,jdbcType=INTEGER}, #{measure,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wuhunyu.pojo.CustomerReprieve">
+    insert into t_customer_reprieve
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="lossId != null">
+        loss_id,
+      </if>
+      <if test="measure != null">
+        measure,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="lossId != null">
+        #{lossId,jdbcType=INTEGER},
+      </if>
+      <if test="measure != null">
+        #{measure,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wuhunyu.pojo.CustomerReprieve">
+    update t_customer_reprieve
+    <set>
+      <if test="lossId != null">
+        loss_id = #{lossId,jdbcType=INTEGER},
+      </if>
+      <if test="measure != null">
+        measure = #{measure,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wuhunyu.pojo.CustomerReprieve">
+    update t_customer_reprieve
+    set loss_id = #{lossId,jdbcType=INTEGER},
+      measure = #{measure,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findCustomerReprieveByLossId" resultMap="BaseResultMap" useCache="true" flushCache="false">
+    select
+        <include refid="Base_Column_List"></include>
+    from
+        t_customer_reprieve
+    <where>
+        is_valid=1
+        <if test="lossId!=null">
+            and loss_id=#{lossId}
+        </if>
+    </where>
+  </select>
+
+  <select id="findCustomerReprieveByIdAndMeasure" flushCache="false" useCache="true" resultMap="BaseResultMap">
+    select
+        <include refid="Base_Column_List"></include>
+    from
+        t_customer_reprieve
+    <where>
+        is_valid=1 and loss_id=#{lossId} and measure=#{measure}
+    </where>
+  </select>
+
+  <update id="deleteCustomerReprieveByIds" flushCache="true">
+    update
+        t_customer_reprieve
+    <set>
+        is_valid=0
+    </set>
+    <where>
+        id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </where>
+  </update>
+
+</mapper>

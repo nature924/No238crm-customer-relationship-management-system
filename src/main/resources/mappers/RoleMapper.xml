@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuhunyu.mapper.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.wuhunyu.pojo.Role">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="role_remark" jdbcType="VARCHAR" property="roleRemark" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="is_valid" jdbcType="INTEGER" property="isValid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, role_name, role_remark, create_date, update_date, is_valid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_role
+    where id = #{id,jdbcType=INTEGER} and is_valid=1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wuhunyu.pojo.Role">
+    insert into t_role (id, role_name, role_remark, 
+      create_date, update_date, is_valid
+      )
+    values (#{id,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleRemark,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{isValid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wuhunyu.pojo.Role">
+    insert into t_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+        role_remark,
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+        #{roleRemark,jdbcType=VARCHAR},
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wuhunyu.pojo.Role">
+    update t_role
+    <set>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+        role_remark = #{roleRemark,jdbcType=VARCHAR},
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wuhunyu.pojo.Role">
+    update t_role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      role_remark = #{roleRemark,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      is_valid = #{isValid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findRoles" useCache="true" resultType="map" flushCache="false">
+    select
+        id,role_name as roleName,is_valid as disabled
+    from
+        t_role
+  </select>
+
+  <select id="findDefaultRoles" flushCache="false" resultType="integer" useCache="true">
+    select
+        role_id as roleId
+    from
+        t_user_role
+    <where>
+        <if test="id!=null and id!=''">
+            user_id=#{id}
+        </if>
+    </where>
+  </select>
+
+  <select id="selectByParams" flushCache="false" useCache="true" resultMap="BaseResultMap">
+    select
+        <include refid="Base_Column_List"></include>
+    from
+        t_role
+    <where>
+        is_valid=1
+        <if test="roleName!=null and roleName!=''">
+            and role_name like concat('%',#{roleName},'%')
+        </if>
+    </where>
+  </select>
+
+  <select id="selectByRoleName" flushCache="false" useCache="true" resultMap="BaseResultMap">
+    select
+        <include refid="Base_Column_List"/>
+    from
+        t_role
+    <where>
+        is_valid=1
+        <if test="roleName!=null and roleName!=''">
+          and role_name =#{roleName}
+        </if>
+    </where>
+  </select>
+
+  <update id="deleteRoles" flushCache="true">
+    update
+        t_role
+    <set>
+        is_valid=0
+    </set>
+    <where>
+        id in
+        <if test="ids!=null and ids!=''">
+            <foreach collection="ids" open="(" close=")" separator="," item="id">
+              #{id}
+            </foreach>
+        </if>
+    </where>
+  </update>
+
+  <select id="findRolesByUserId" flushCache="false" useCache="true" resultType="String">
+    select
+        role_name as roleName
+    from
+        t_user_role ur left join
+        t_role r on ur.role_id=r.id
+    <where>
+        <if test="userId!=null">
+            ur.user_id=#{userId}
+        </if>
+    </where>
+  </select>
+
+</mapper>

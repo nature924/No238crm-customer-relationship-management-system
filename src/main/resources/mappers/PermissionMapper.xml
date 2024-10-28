@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuhunyu.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.wuhunyu.pojo.Permission">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="module_id" jdbcType="INTEGER" property="moduleId" />
+    <result column="acl_value" jdbcType="VARCHAR" property="aclValue" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, role_id, module_id, acl_value, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_permission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_permission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wuhunyu.pojo.Permission">
+    insert into t_permission (id, role_id, module_id, 
+      acl_value, create_date, update_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{moduleId,jdbcType=INTEGER}, 
+      #{aclValue,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wuhunyu.pojo.Permission">
+    insert into t_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="moduleId != null">
+        module_id,
+      </if>
+      <if test="aclValue != null">
+        acl_value,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleId != null">
+        #{moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="aclValue != null">
+        #{aclValue,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wuhunyu.pojo.Permission">
+    update t_permission
+    <set>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleId != null">
+        module_id = #{moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="aclValue != null">
+        acl_value = #{aclValue,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wuhunyu.pojo.Permission">
+    update t_permission
+    set role_id = #{roleId,jdbcType=INTEGER},
+      module_id = #{moduleId,jdbcType=INTEGER},
+      acl_value = #{aclValue,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findAllPermissions" flushCache="false" useCache="true" resultMap="BaseResultMap">
+    select
+        <include refid="Base_Column_List"></include>
+    from
+        t_permission
+  </select>
+
+  <select id="findModuleByRoleId" flushCache="false" useCache="true" resultType="integer">
+    select
+        module_id as moduleId
+    from
+        t_permission
+    <where>
+        <if test="roleId!=null">
+          role_id=#{roleId}
+        </if>
+    </where>
+  </select>
+
+  <delete id="deletePermissionByRoleId" flushCache="true">
+    delete from
+        t_permission
+    <where>
+        <if test="roleId!=null and roleId!=''">
+            role_id=#{roleId}
+        </if>
+    </where>
+  </delete>
+
+  <update id="updatePermissionByRoleIdAndModuleId" flushCache="true">
+    update
+        t_permission
+    <set>
+        role_id=#{roleId},module_id=#{moduleId},
+        <if test="aclValue!=null and aclValue!=''">
+          acl_value=#{aclValue},
+        </if>
+        <if test="createDate!=null and createDate!=''">
+          create_date=#{createDate},
+        </if>
+        update_date=#{updateDate}
+    </set>
+    <where>
+        role_id=#{roleId} and module_id=#{moduleId}
+    </where>
+  </update>
+
+  <delete id="deletePermissionByRoleIdAndModuleId" flushCache="true">
+    delete from
+        t_permission
+    <where>
+        role_id=#{roleId} and module_id=#{moduleId}
+    </where>
+  </delete>
+
+  <select id="findAclValueByUserId" useCache="true" flushCache="false" resultType="String">
+    select
+        acl_value as aclValue
+    from (
+        select
+            DISTINCT acl_value
+        from
+	        t_user_role ur
+	        LEFT JOIN
+	        t_permission p
+	        ON
+	        ur.role_id=p.role_id
+	        and ur.user_id=#{userId}
+    ) as temp
+    where
+        acl_value is not null
+    ORDER BY acl_value ASC
+  </select>
+
+  <delete id="deletePermissionModuleId" flushCache="true">
+    delete from
+        t_permission
+    <where>
+        <if test="ids!=null and ids!=''">
+            module_id in
+            <foreach collection="ids" open="(" close=")" separator="," item="id">
+                #{id}
+            </foreach>
+        </if>
+    </where>
+  </delete>
+
+</mapper>

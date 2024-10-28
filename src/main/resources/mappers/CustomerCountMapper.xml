@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuhunyu.mapper.CustomerCountMapper">
+
+    <select id="countCustomerContribution" resultType="map" flushCache="false" useCache="true">
+        select
+            c.name,sum(oe.sum) as total
+        from
+            t_customer c left join t_customer_order co on c.id=co.cus_id
+            left join t_order_details oe on co.id=oe.order_id
+        where
+            c.is_valid=1
+            and co.is_valid=1
+            and oe.is_valid=1
+            and c.state=0
+            <if test="customer!=null and customer!=''">
+                and c.name like concat(#{customer},'%')
+            </if>
+            <if test="minDate!=null">
+                and co.order_date >= #{minDate}
+            </if>
+            <if test="maxDate!=null">
+                and co.order_date &lt;= #{maxDate}
+            </if>
+        group by
+            c.name
+        having
+            1=1
+            <if test="minMoney!=null and minMoney!=''">
+                and total >= #{minMoney}
+            </if>
+            <if test="maxMoney!=null and maxMoney!=''">
+                and total &lt;= #{maxMoney}
+            </if>
+        limit #{page},#{limit}
+    </select>
+
+    <select id="countCustomerContributionForNum" resultType="Integer" flushCache="false" useCache="true">
+        select
+            count(*)
+        from
+            (select
+                c.name,sum(oe.sum) as total
+            from
+                t_customer c left join t_customer_order co on c.id=co.cus_id
+                left join t_order_details oe on co.id=oe.order_id
+            where
+                c.is_valid=1
+                and co.is_valid=1
+                and oe.is_valid=1
+                and c.state=0
+                <if test="customer!=null and customer!=''">
+                    and c.name like concat(#{customer},'%')
+                </if>
+                <if test="minDate!=null">
+                    and co.order_date >= #{minDate}
+                </if>
+                <if test="maxDate!=null">
+                    and co.order_date &lt;= #{maxDate}
+                </if>
+            group by
+                c.name
+            having
+                1=1
+                <if test="minMoney!=null">
+                    and total >= #{minMoney}
+                </if>
+                <if test="maxMoney!=null">
+                    and total &lt;= #{maxMoney}
+                </if>) temp
+    </select>
+
+    <select id="countCustomerMake" resultType="map" useCache="true" flushCache="false">
+        select
+            level,count(level) as total
+        from
+            t_customer
+        where
+            is_valid=1
+            and state=0
+        group by
+            level
+    </select>
+
+    <select id="countCustomerLoss" resultType="map" flushCache="false" useCache="true">
+        select
+            convert_tz(update_date, '+08:00', '+00:00') as date,count(update_date) as total
+        from
+            t_customer_loss
+        where
+            is_valid=1
+            and state=1
+            <if test="customerNo!=null and customerNo!=''">
+                and cus_no=#{customerNo}
+            </if>
+            <if test="customerName!=null and customerName!=''">
+                and cus_name like concat(#{customerName},'%')
+            </if>
+        group by
+            update_date
+    </select>
+
+</mapper>
